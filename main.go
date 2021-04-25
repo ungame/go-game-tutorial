@@ -100,14 +100,6 @@ GameLoop:
 	}
 }
 
-func isRightWall(objectWidth int32, x float64) bool {
-	return x >= screenWidth-float64(objectWidth/4)
-}
-
-func isLeftWall(x float64) bool {
-	return x <= 0
-}
-
 type Destructor interface {
 	Destroy()
 }
