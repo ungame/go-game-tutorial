@@ -11,6 +11,8 @@ const (
 	screenHeight = 800
 )
 
+var Elements []*Element
+
 func main() {
 	err := sdl.Init(sdl.INIT_EVERYTHING)
 	if err != nil {
@@ -37,30 +39,33 @@ func main() {
 	defer renderer.Destroy()
 
 	player := NewPlayer(renderer)
+	Elements = append(Elements, player)
 	destructor = append(destructor, player)
 
-	var enemies []BasicEnemy
 	BasicEnemySize := 105
 
 	for i := 0; i < 5; i++ {
 		for j := 0; j < 3; j++ {
+
+
 			x := (float64(i)/5)*screenWidth + float64(BasicEnemySize/2)
 			y := float64(j*BasicEnemySize) + float64(BasicEnemySize/2)
 
-			enemy := NewBasicEnemy(renderer, x, y)
-			enemies = append(enemies, *enemy)
+			enemy := NewBasicEnemy(renderer, Vector{x, y})
+			Elements = append(Elements, enemy)
 			destructor = append(destructor, enemy)
 		}
 	}
 
-	initBullets(renderer)
+	InitBullets(renderer, 30)
+	Elements = append(Elements, Bullets...)
 
 GameLoop:
 	for {
 		for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
 			switch event.(type) {
 			case *sdl.QuitEvent:
-				DestroyAll(destructor)
+				DestroyAll(Elements)
 				fmt.Println("Quit...")
 				break GameLoop
 			}
@@ -75,25 +80,11 @@ GameLoop:
 			log.Panicln(err)
 		}
 
-		err = player.Draw(renderer)
-		if err != nil {
-			log.Panicln(err)
-		}
-		player.Update()
-
-		for _, enemy := range enemies {
-			err = enemy.Draw(renderer)
-			if err != nil {
-				log.Panicln(err)
+		for _, element := range Elements {
+			if element.active {
+				element.Draw(renderer)
+				element.Update()
 			}
-		}
-
-		for _, bullet := range Bullets {
-			err := bullet.Draw(renderer)
-			if err != nil {
-				log.Panicln(err)
-			}
-			bullet.Update()
 		}
 
 		renderer.Present()
@@ -106,22 +97,10 @@ type Destructor interface {
 
 var destructor []Destructor
 
-func DestroyAll(d []Destructor) {
+func DestroyAll(d []*Element) {
 	for index := range d {
 		d[index].Destroy()
 		fmt.Println("object destroyed successfully")
 	}
 }
 
-func GetTextureFromBMP(renderer *sdl.Renderer, filename string) *sdl.Texture {
-	img, err := sdl.LoadBMP(filename)
-	if err != nil {
-		log.Panicln(err)
-	}
-	defer img.Free()
-	tex, err := renderer.CreateTextureFromSurface(img)
-	if err != nil {
-		log.Panicln(err)
-	}
-	return tex
-}
