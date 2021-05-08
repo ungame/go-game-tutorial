@@ -13,12 +13,15 @@ type Vector struct {
 type Component interface {
 	OnUpdate() error
 	OnDraw(renderer *sdl.Renderer) error
+	OnCollision(other *Element) error
 }
 
 type Element struct {
 	position   Vector
 	rotation   float64
 	active     bool
+	tag        string
+	collisions []Circle
 	components []Component
 }
 
@@ -31,7 +34,6 @@ func (e *Element) Draw(renderer *sdl.Renderer) {
 	}
 }
 
-
 func (e *Element) Update() {
 	for _, component := range e.components {
 		err := component.OnUpdate()
@@ -39,6 +41,16 @@ func (e *Element) Update() {
 			log.Panicln(err)
 		}
 	}
+}
+
+func (e *Element) Collision(other *Element) error {
+	for _, component := range e.components {
+		err := component.OnCollision(other)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func (e *Element) AddComponent(c Component) {
@@ -78,7 +90,7 @@ func (e *Element) GetHeight() float64 {
 	return 0
 }
 
-func (e *Element) Destroy()  {
+func (e *Element) Destroy() {
 	sr := e.GetComponent(&SpriteRenderer{}).(*SpriteRenderer)
 	if sr != nil {
 		if err := sr.tex.Destroy(); err != nil {

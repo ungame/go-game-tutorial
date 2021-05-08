@@ -47,7 +47,6 @@ func main() {
 	for i := 0; i < 5; i++ {
 		for j := 0; j < 3; j++ {
 
-
 			x := (float64(i)/5)*screenWidth + float64(BasicEnemySize/2)
 			y := float64(j*BasicEnemySize) + float64(BasicEnemySize/2)
 
@@ -87,6 +86,11 @@ GameLoop:
 			}
 		}
 
+		err = CheckCollisions(Elements)
+		if err != nil {
+			log.Panicln(err)
+		}
+
 		renderer.Present()
 	}
 }
@@ -100,7 +104,6 @@ var destructor []Destructor
 func DestroyAll(d []*Element) {
 	for index := range d {
 		d[index].Destroy()
-		fmt.Println("object destroyed successfully")
 	}
+	fmt.Println("objects destroyed successfully:", len(d))
 }
-

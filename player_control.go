@@ -37,7 +37,11 @@ func (km *KeyboardMover) OnUpdate() error {
 	return nil
 }
 
-func (km *KeyboardMover) OnDraw(renderer *sdl.Renderer) error {
+func (km *KeyboardMover) OnDraw(_ *sdl.Renderer) error {
+	return nil
+}
+
+func (km *KeyboardMover) OnCollision(_ *Element) error {
 	return nil
 }
 
@@ -83,6 +87,10 @@ func (ks *KeyboardShooter) Shoot(x, y float64) {
 	}
 }
 
-func (ks *KeyboardShooter) OnDraw(renderer *sdl.Renderer) error {
+func (ks *KeyboardShooter) OnDraw(_ *sdl.Renderer) error {
+	return nil
+}
+
+func (ks *KeyboardShooter) OnCollision(_ *Element) error {
 	return nil
 }

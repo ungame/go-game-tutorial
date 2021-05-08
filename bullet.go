@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/veandco/go-sdl2/sdl"
 )
 
@@ -8,13 +9,19 @@ const bulletSpeed = 0.2
 
 func NewBullet(renderer *sdl.Renderer) *Element {
 	var b Element
-
+	b.tag = "bullet"
 	b.position = Vector{}
 	sr := NewSpriteRenderer(&b, renderer, "sprites/player_bullet.bmp")
 	b.AddComponent(sr)
 
 	mover := NewBulletMover(&b, bulletSpeed)
 	b.AddComponent(mover)
+
+	col := Circle{}
+	col.center = b.position
+	col.radius = 8
+
+	b.collisions = append(b.collisions, col)
 
 	return &b
 }
@@ -43,4 +50,5 @@ func ReloadBullets() {
 			bullet.active = false
 		}
 	}
+	fmt.Print("\rReload bullets")
 }
