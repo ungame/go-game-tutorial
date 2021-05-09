@@ -91,7 +91,7 @@ func (e *Element) GetHeight() float64 {
 }
 
 func (e *Element) Destroy() {
-	sr := e.GetComponent(&SpriteRenderer{}).(*SpriteRenderer)
+	sr, _ := e.GetComponent(&SpriteRenderer{}).(*SpriteRenderer)
 	if sr != nil {
 		if err := sr.tex.Destroy(); err != nil {
 			log.Panicln(err.Error())

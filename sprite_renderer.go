@@ -26,37 +26,7 @@ func NewSpriteRenderer(element *Element, renderer *sdl.Renderer, filename string
 }
 
 func (sr *SpriteRenderer) OnDraw(renderer *sdl.Renderer) error {
-
-	x := sr.container.position.x - sr.width/2.0
-	y := sr.container.position.y - sr.height/2.0
-
-	src := &sdl.Rect{
-		X: 0,
-		Y: 0,
-		W: int32(sr.width),
-		H: int32(sr.height),
-	}
-	dst := &sdl.Rect{
-		X: int32(x),
-		Y: int32(y),
-		W: int32(sr.width),
-		H: int32(sr.height),
-	}
-
-	point := &sdl.Point{
-		X: int32(sr.width) / 2,
-		Y: int32(sr.height) / 2,
-	}
-
-	return renderer.CopyEx(
-		sr.tex,
-		src,
-		dst,
-		sr.container.rotation,
-		point,
-		sdl.FLIP_NONE,
-	)
-
+	return DrawTexture(sr.tex, sr.container.position, sr.container.rotation, renderer)
 }
 
 func (sr *SpriteRenderer) OnUpdate() error {

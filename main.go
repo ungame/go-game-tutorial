@@ -100,8 +100,6 @@ GameLoop:
 
 		renderer.Present()
 
-		time.Sleep(time.Millisecond * 10)
-
 		Delta = time.Since(frameStartTime).Seconds() * targetTicksPerSecond
 
 		fmt.Printf("\r%v", time.Since(frameStartTime))
