@@ -12,7 +12,6 @@ func NewVulnerableToBullets(container *Element) *VulnerableToBullets {
 	return &VulnerableToBullets{container}
 }
 
-
 func (bm *VulnerableToBullets) OnDraw(_ *sdl.Renderer) error {
 	return nil
 }

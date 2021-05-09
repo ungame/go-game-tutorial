@@ -4,14 +4,19 @@ import (
 	"fmt"
 	"github.com/veandco/go-sdl2/sdl"
 	"log"
+	"time"
 )
 
 const (
 	screenWidth  = 600
 	screenHeight = 800
+
+	targetTicksPerSecond = 60
 )
 
 var Elements []*Element
+
+var Delta float64
 
 func main() {
 	err := sdl.Init(sdl.INIT_EVERYTHING)
@@ -61,6 +66,8 @@ func main() {
 
 GameLoop:
 	for {
+		frameStartTime := time.Now()
+
 		for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
 			switch event.(type) {
 			case *sdl.QuitEvent:
@@ -92,6 +99,12 @@ GameLoop:
 		}
 
 		renderer.Present()
+
+		time.Sleep(time.Millisecond * 10)
+
+		Delta = time.Since(frameStartTime).Seconds() * targetTicksPerSecond
+
+		fmt.Printf("\r%v", time.Since(frameStartTime))
 	}
 }
 

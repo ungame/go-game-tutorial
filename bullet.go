@@ -5,7 +5,7 @@ import (
 	"github.com/veandco/go-sdl2/sdl"
 )
 
-const bulletSpeed = 0.2
+const bulletSpeed = 15
 
 func NewBullet(renderer *sdl.Renderer) *Element {
 	var b Element

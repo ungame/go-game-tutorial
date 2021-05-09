@@ -22,8 +22,8 @@ func (bm *BulletMover) OnDraw(_ *sdl.Renderer) error {
 }
 
 func (bm *BulletMover) OnUpdate() error {
-	bm.container.position.x += bulletSpeed * math.Cos(bm.container.rotation)
-	bm.container.position.y += bulletSpeed * math.Sin(bm.container.rotation)
+	bm.container.position.x += bulletSpeed * math.Cos(bm.container.rotation) * Delta
+	bm.container.position.y += bulletSpeed * math.Sin(bm.container.rotation) * Delta
 
 	for index := range bm.container.collisions {
 		bm.container.collisions[index].center = bm.container.position

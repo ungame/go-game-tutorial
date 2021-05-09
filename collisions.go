@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"math"
 )
 
@@ -36,7 +35,7 @@ func Collides(c1, c2 Circle) bool {
 }
 
 func CheckCollisions(elements []*Element) error {
-	for i := 0; i < len(elements) - 1; i++ {
+	for i := 0; i < len(elements)-1; i++ {
 		for j := i + 1; j < len(elements); j++ {
 			before := elements[i]
 			next := elements[j]
@@ -45,7 +44,6 @@ func CheckCollisions(elements []*Element) error {
 				for _, c2 := range next.collisions {
 
 					if Collides(c1, c2) && before.active && next.active {
-						fmt.Println("Collides")
 						err := before.Collision(next)
 						if err != nil {
 							return err
