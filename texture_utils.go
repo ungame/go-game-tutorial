@@ -3,8 +3,6 @@ package main
 import (
 	"github.com/veandco/go-sdl2/sdl"
 	"log"
-	"os"
-	"path/filepath"
 )
 
 func DrawTexture(tex *sdl.Texture, position Vector, rotation float64, renderer *sdl.Renderer) error {
@@ -42,29 +40,4 @@ func DrawTexture(tex *sdl.Texture, position Vector, rotation float64, renderer *
 		point,
 		sdl.FLIP_NONE,
 	)
-}
-
-func LoadTextures(renderer *sdl.Renderer, folderPath string) []*sdl.Texture {
-	var textures []*sdl.Texture
-
-	filenames := ListFiles(folderPath)
-
-	for _, filename := range filenames {
-		tex := GetTextureFromBMP(renderer, filename)
-		textures = append(textures, tex)
-	}
-
-	return textures
-}
-
-func ListFiles(folderPath string) []string {
-	var files []string
-	err := filepath.Walk(folderPath, func(path string, _ os.FileInfo, err error) error {
-		files = append(files, path)
-		return err
-	})
-	if err != nil {
-		panic(err)
-	}
-	return files
 }
