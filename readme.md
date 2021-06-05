@@ -2,7 +2,7 @@
 
 https://github.com/veandco/go-sdl2
 
-## Instalar MingW64
+## Instalar Mingw-W64
 
 - https://sourceforge.net/projects/mingw-w64/
 
